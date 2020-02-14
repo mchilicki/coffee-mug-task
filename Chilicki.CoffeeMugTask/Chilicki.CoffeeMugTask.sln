@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chilicki.CoffeeMugTask.WebApi", "Chilicki.CoffeeMugTask.WebApi\Chilicki.CoffeeMugTask.WebApi.csproj", "{E221524E-B8DA-4D53-832A-40EA30A2C539}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chilicki.CoffeeMugTask.Data", "Chilicki.CoffeeMugTask.Data\Chilicki.CoffeeMugTask.Data.csproj", "{036062FC-42F4-47D0-BF2C-3344BA1DF4D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E221524E-B8DA-4D53-832A-40EA30A2C539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E221524E-B8DA-4D53-832A-40EA30A2C539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E221524E-B8DA-4D53-832A-40EA30A2C539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E221524E-B8DA-4D53-832A-40EA30A2C539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036062FC-42F4-47D0-BF2C-3344BA1DF4D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036062FC-42F4-47D0-BF2C-3344BA1DF4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036062FC-42F4-47D0-BF2C-3344BA1DF4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036062FC-42F4-47D0-BF2C-3344BA1DF4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73A9379B-3D50-4A4D-B071-37EE5212A575}
+	EndGlobalSection
+EndGlobal
