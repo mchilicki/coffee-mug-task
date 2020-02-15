@@ -3,7 +3,7 @@ using Chilicki.CoffeeMugTask.Application.Configurations.Automapper;
 using Chilicki.CoffeeMugTask.Application.Dtos;
 using Chilicki.CoffeeMugTask.Application.Factories;
 using Chilicki.CoffeeMugTask.Application.Services;
-using Chilicki.CoffeeMugTask.Application.Services.Base;
+using Chilicki.CoffeeMugTask.Application.Validators;
 using Chilicki.CoffeeMugTask.Data.Configurations.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,11 +20,18 @@ namespace Chilicki.CoffeeMugTask.Application.Configurations.DependencyInjection
             ConfigureServices(services);
             ConfigureFactories(services);
             ConfigureAutomapper(services);
-        }        
+            ConfigureValidators(services);
+        }
+
+        private void ConfigureValidators(IServiceCollection services)
+        {
+            services.AddScoped<IValidator<ProductDataDto>, ProductValidator>();
+            services.AddScoped<DecimalValidator>();
+        }
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ICrudService<ProductDto>, ProductService>();
+            services.AddScoped<ProductService>();            
         }
 
         private void ConfigureFactories(IServiceCollection services)

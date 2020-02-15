@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Chilicki.CoffeeMugTask.Application.Dtos;
 using Chilicki.CoffeeMugTask.Application.Factories;
-using Chilicki.CoffeeMugTask.Application.Services.Base;
+using Chilicki.CoffeeMugTask.Application.Validators;
 using Chilicki.CoffeeMugTask.Data.Databases.UnitsOfWork;
 using Chilicki.CoffeeMugTask.Data.Entities;
 using Chilicki.CoffeeMugTask.Data.Repositories;
@@ -12,48 +12,53 @@ using System.Threading.Tasks;
 
 namespace Chilicki.CoffeeMugTask.Application.Services
 {
-    public class ProductService : ICrudService<ProductDto>
+    public class ProductService 
     {
         private readonly IMapper mapper;
-        private readonly IBaseRepository<Product> productRepository;
+        private readonly IBaseRepository<Product> repository;
         private readonly ProductFactory productFactory;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IValidator<ProductDataDto> validator;
 
         public ProductService(
             IMapper mapper,
-            IBaseRepository<Product> productRepository,
+            IBaseRepository<Product> repository,
             ProductFactory productFactory,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IValidator<ProductDataDto> validator)
         {
             this.mapper = mapper;
-            this.productRepository = productRepository;
+            this.repository = repository;
             this.productFactory = productFactory;
             this.unitOfWork = unitOfWork;
+            this.validator = validator;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            var products = await productRepository.GetAllAsync();
+            var products = await repository.GetAllAsync();
             return mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
         public async Task<ProductDto> Find(Guid id)
         {
-            var product = await productRepository.FindAsync(id);
+            var product = await repository.FindAsync(id);
             return mapper.Map<ProductDto>(product);
         }
 
-        public async Task<ProductDto> Create(ProductDto dto)
+        public async Task<ProductDto> Create(ProductDataDto dto)
         {
+            validator.Validate(dto);
             var product = productFactory.Create(dto);
-            var addedProduct = await productRepository.AddAsync(product);
+            var addedProduct = await repository.AddAsync(product);
             await unitOfWork.SaveAsync();
             return mapper.Map<ProductDto>(addedProduct);
         }
 
-        public async Task<ProductDto> Update(Guid id, ProductDto dto)
+        public async Task<ProductDto> Update(Guid id, ProductDataDto dto)
         {
-            var product = await productRepository.FindAsync(id);
+            validator.Validate(dto);
+            var product = await repository.FindAsync(id);
             product.Name = dto.Name;
             product.Price = dto.Price;
             await unitOfWork.SaveAsync();
@@ -62,10 +67,10 @@ namespace Chilicki.CoffeeMugTask.Application.Services
 
         public async Task Delete(Guid id)
         {
-            var product = await productRepository.FindAsync(id);
+            var product = await repository.FindAsync(id);
             if (product == null)
                 return;
-            productRepository.Remove(product);
+            repository.Remove(product);
             await unitOfWork.SaveAsync();
         }
     }

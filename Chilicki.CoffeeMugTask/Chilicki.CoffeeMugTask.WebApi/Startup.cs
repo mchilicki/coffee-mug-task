@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Chilicki.CoffeeMugTask.WebApi.Configurations.DependencyInjection;
+using Chilicki.CoffeeMugTask.WebApi.Configurations.ErrorHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,6 +40,8 @@ namespace Chilicki.CoffeeMugTask.WebApi
 
             app.UseRouting();
 
+            app.UseMiddleware(typeof(ErrorMiddlewareHandler));
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -47,6 +50,13 @@ namespace Chilicki.CoffeeMugTask.WebApi
             });
 
             app.UseCors("AllowAll");
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Coffee Mug Recruitment Task");
+            });
         }
     }
 }

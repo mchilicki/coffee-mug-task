@@ -8,7 +8,7 @@ namespace Chilicki.CoffeeMugTask.Application.Factories
 {
     public class ProductFactory
     {
-        public Product Create(ProductDto dto)
+        public Product Create(ProductDataDto dto)
         {
             return new Product()
             {
