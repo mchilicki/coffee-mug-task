@@ -1,4 +1,6 @@
-﻿using Chilicki.CoffeeMugTask.Data.Configurations.DependencyInjection;
+﻿using Chilicki.CoffeeMugTask.Application.Configurations.DependencyInjection;
+using Chilicki.CoffeeMugTask.Data.Configurations.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,10 +11,11 @@ namespace Chilicki.CoffeeMugTask.WebApi.Configurations.DependencyInjection
 {
     public class WebApiDependencyInjection : IDependencyInjectionConfiguration
     {
-        public void Register(IServiceCollection services)
+        public void Register(IServiceCollection services, IConfiguration configuration)
         {
             RegisterControllers(services);
-            new DataDependencyInjection().Register(services);
+            new ApplicationDependencyInjection().Register(services, configuration);
+            new DataDependencyInjection().Register(services, configuration);
         }
 
         private void RegisterControllers(IServiceCollection services)

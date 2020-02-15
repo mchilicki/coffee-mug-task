@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Chilicki.CoffeeMugTask.Data.Dtos;
-using Chilicki.CoffeeMugTask.Data.Services;
+using Chilicki.CoffeeMugTask.Application.Dtos;
+using Chilicki.CoffeeMugTask.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,10 +35,13 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] ProductDto product)
-            => Ok(await productService.Update(product));
+            => Ok(await productService.Update(id, product));
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
-            => Ok(await productService.Delete(id));
+        {
+            await productService.Delete(id);
+            return Ok();
+        }
     }
 }

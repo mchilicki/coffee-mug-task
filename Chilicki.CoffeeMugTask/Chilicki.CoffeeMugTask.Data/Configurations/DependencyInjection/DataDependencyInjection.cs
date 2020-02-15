@@ -1,4 +1,8 @@
-﻿using Chilicki.CoffeeMugTask.Data.Services;
+﻿using Chilicki.CoffeeMugTask.Data.Databases;
+using Chilicki.CoffeeMugTask.Data.Entities;
+using Chilicki.CoffeeMugTask.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -6,28 +10,30 @@ using System.Text;
 
 namespace Chilicki.CoffeeMugTask.Data.Configurations.DependencyInjection
 {
-    public class DataDependencyInjection : IDependencyInjectionConfiguration
+    public class DataDependencyInjection 
     {
-        public void Register(IServiceCollection services)
+        public void Register(IServiceCollection services, IConfiguration configuration)
         {
-            RegisterDatabases(services);
+            RegisterDatabases(services, configuration);
             RegisterRepositories(services);
-            RegisterServices(services);
         }
 
-        private void RegisterDatabases(IServiceCollection services)
+        private void RegisterDatabases(IServiceCollection services, IConfiguration configuration)
         {
-
+            var databaseConnectionString = configuration.GetConnectionString("CoffeeMug");
+            services.AddDbContext<DbContext, CoffeeMugDbContext>(options => options
+                .UseSqlServer(
+                    databaseConnectionString,
+                    b => b.MigrationsAssembly(typeof(CoffeeMugDbContext).Assembly.GetName().Name
+                ))
+                .UseLazyLoadingProxies()
+            );
         }
 
         private void RegisterRepositories(IServiceCollection services)
         {
-
-        }
-
-        private void RegisterServices(IServiceCollection services)
-        {
-            services.AddScoped<ProductService>();
+            services.AddScoped<IBaseRepository<BaseEntity>, BaseRepository<BaseEntity>>();
+            services.AddScoped<IBaseRepository<Product>, ProductRepository>();
         }
     }
 }
