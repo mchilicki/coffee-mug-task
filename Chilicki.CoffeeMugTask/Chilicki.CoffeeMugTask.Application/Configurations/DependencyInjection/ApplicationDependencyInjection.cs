@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Chilicki.CoffeeMugTask.Application.Configurations.Automapper;
+using Chilicki.CoffeeMugTask.Application.Dtos;
+using Chilicki.CoffeeMugTask.Application.Factories;
 using Chilicki.CoffeeMugTask.Application.Services;
+using Chilicki.CoffeeMugTask.Application.Services.Base;
 using Chilicki.CoffeeMugTask.Data.Configurations.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +17,19 @@ namespace Chilicki.CoffeeMugTask.Application.Configurations.DependencyInjection
     {
         public void Register(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<ProductService>();
+            ConfigureServices(services);
+            ConfigureFactories(services);
             ConfigureAutomapper(services);
+        }        
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddScoped<ICrudService<ProductDto>, ProductService>();
+        }
+
+        private void ConfigureFactories(IServiceCollection services)
+        {
+            services.AddScoped<ProductFactory>();
         }
 
         private void ConfigureAutomapper(IServiceCollection services)

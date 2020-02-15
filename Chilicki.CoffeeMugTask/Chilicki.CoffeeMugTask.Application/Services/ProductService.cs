@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Chilicki.CoffeeMugTask.Application.Dtos;
+using Chilicki.CoffeeMugTask.Application.Factories;
 using Chilicki.CoffeeMugTask.Application.Services.Base;
+using Chilicki.CoffeeMugTask.Data.Databases.UnitsOfWork;
 using Chilicki.CoffeeMugTask.Data.Entities;
 using Chilicki.CoffeeMugTask.Data.Repositories;
 using System;
@@ -14,13 +16,19 @@ namespace Chilicki.CoffeeMugTask.Application.Services
     {
         private readonly IMapper mapper;
         private readonly IBaseRepository<Product> productRepository;
+        private readonly ProductFactory productFactory;
+        private readonly IUnitOfWork unitOfWork;
 
         public ProductService(
             IMapper mapper,
-            IBaseRepository<Product> productRepository)
+            IBaseRepository<Product> productRepository,
+            ProductFactory productFactory,
+            IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
             this.productRepository = productRepository;
+            this.productFactory = productFactory;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAll()
@@ -35,19 +43,30 @@ namespace Chilicki.CoffeeMugTask.Application.Services
             return mapper.Map<ProductDto>(product);
         }
 
-        public async Task<ProductDto> Create(ProductDto product)
+        public async Task<ProductDto> Create(ProductDto dto)
         {
-            throw new NotImplementedException();
+            var product = productFactory.Create(dto);
+            var addedProduct = await productRepository.AddAsync(product);
+            await unitOfWork.SaveAsync();
+            return mapper.Map<ProductDto>(addedProduct);
         }
 
-        public async Task<ProductDto> Update(Guid id, ProductDto product)
+        public async Task<ProductDto> Update(Guid id, ProductDto dto)
         {
-            throw new NotImplementedException();
+            var product = await productRepository.FindAsync(id);
+            product.Name = dto.Name;
+            product.Price = dto.Price;
+            await unitOfWork.SaveAsync();
+            return mapper.Map<ProductDto>(product);
         }
 
         public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var product = await productRepository.FindAsync(id);
+            if (product == null)
+                return;
+            productRepository.Remove(product);
+            await unitOfWork.SaveAsync();
         }
     }
 }

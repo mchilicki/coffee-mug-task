@@ -1,4 +1,5 @@
 ﻿using Chilicki.CoffeeMugTask.Data.Databases;
+using Chilicki.CoffeeMugTask.Data.Databases.UnitsOfWork;
 using Chilicki.CoffeeMugTask.Data.Entities;
 using Chilicki.CoffeeMugTask.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ namespace Chilicki.CoffeeMugTask.Data.Configurations.DependencyInjection
 
         private void RegisterRepositories(IServiceCollection services)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBaseRepository<BaseEntity>, BaseRepository<BaseEntity>>();
             services.AddScoped<IBaseRepository<Product>, ProductRepository>();
         }

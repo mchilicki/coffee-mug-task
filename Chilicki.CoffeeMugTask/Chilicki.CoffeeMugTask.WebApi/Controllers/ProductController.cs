@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Chilicki.CoffeeMugTask.Application.Dtos;
 using Chilicki.CoffeeMugTask.Application.Services;
+using Chilicki.CoffeeMugTask.Application.Services.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +14,10 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService productService;
+        private readonly ICrudService<ProductDto> productService;
 
         public ProductController(
-            ProductService productService)
+            ICrudService<ProductDto> productService)
         {
             this.productService = productService;
         }
