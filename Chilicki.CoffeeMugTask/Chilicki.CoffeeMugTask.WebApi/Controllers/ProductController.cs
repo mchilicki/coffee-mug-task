@@ -27,7 +27,7 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
 
         [HttpGet("{id}", Name = "Get")]
         public async Task<IActionResult> Get(Guid id)
-            => Ok(await productService.GetById(id));
+            => Ok(await productService.Find(id));
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProductDto product)
