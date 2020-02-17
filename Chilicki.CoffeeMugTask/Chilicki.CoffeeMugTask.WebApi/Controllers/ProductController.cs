@@ -22,10 +22,13 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
             => Ok(await productService.GetAll());
 
         [HttpGet("{id}", Name = "Get")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(Guid id)
             => Ok(await productService.Find(id));
 
@@ -41,6 +44,7 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(Guid id, [FromBody] ProductDataDto dto)
         {
             await productService.Update(id, dto);

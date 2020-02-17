@@ -25,7 +25,7 @@ namespace Chilicki.CoffeeMugTask.Application.Configurations.DependencyInjection
 
         private void ConfigureValidators(IServiceCollection services)
         {
-            services.AddScoped<IValidator<ProductDataDto>, ProductValidator>();
+            services.AddScoped<ProductValidator>();
             services.AddScoped<DecimalValidator>();
         }
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Chilicki.CoffeeMugTask.Application.Dtos;
 using Chilicki.CoffeeMugTask.Application.Factories;
+using Chilicki.CoffeeMugTask.Application.Helpers.Exceptions;
 using Chilicki.CoffeeMugTask.Application.Validators;
 using Chilicki.CoffeeMugTask.Data.Databases.UnitsOfWork;
 using Chilicki.CoffeeMugTask.Data.Entities;
@@ -18,14 +19,14 @@ namespace Chilicki.CoffeeMugTask.Application.Services
         private readonly IBaseRepository<Product> repository;
         private readonly ProductFactory productFactory;
         private readonly IUnitOfWork unitOfWork;
-        private readonly IValidator<ProductDataDto> validator;
+        private readonly ProductValidator validator;
 
         public ProductService(
             IMapper mapper,
             IBaseRepository<Product> repository,
             ProductFactory productFactory,
             IUnitOfWork unitOfWork,
-            IValidator<ProductDataDto> validator)
+            ProductValidator validator)
         {
             this.mapper = mapper;
             this.repository = repository;
@@ -43,6 +44,7 @@ namespace Chilicki.CoffeeMugTask.Application.Services
         public async Task<ProductDto> Find(Guid id)
         {
             var product = await repository.FindAsync(id);
+            validator.Validate(product);
             return mapper.Map<ProductDto>(product);
         }
 
@@ -59,6 +61,7 @@ namespace Chilicki.CoffeeMugTask.Application.Services
         {
             validator.Validate(dto);
             var product = await repository.FindAsync(id);
+            validator.Validate(product);
             product.Name = dto.Name;
             product.Price = dto.Price;
             await unitOfWork.SaveAsync();

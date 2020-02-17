@@ -34,6 +34,8 @@ namespace Chilicki.CoffeeMugTask.WebApi.Configurations.ErrorHandling
             var code = HttpStatusCode.InternalServerError;
             if (exception is BadRequestException)
                 code = HttpStatusCode.BadRequest;
+            if (exception is NotFoundException)
+                code = HttpStatusCode.NotFound;
             var errorDto = new ErrorDto()
             {
                 Message = exception.Message
