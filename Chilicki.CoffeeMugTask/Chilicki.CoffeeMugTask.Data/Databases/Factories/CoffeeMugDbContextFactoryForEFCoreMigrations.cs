@@ -10,7 +10,7 @@ namespace Chilicki.CoffeeMugTask.Data.Databases.Factories
     {
         public CoffeeMugDbContext CreateDbContext(string[] args)
         {
-            var databaseConnectionString = "data source=localhost;initial catalog=CoffeeMugDb;integrated security=True;MultipleActiveResultSets=True;";
+            var databaseConnectionString = "Server=tcp:chilicki.database.windows.net,1433;Initial Catalog=CoffeeMugDb;Persist Security Info=False;User ID=mchilicki;Password=Mch1l1ck!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             var optionsBuilder = new DbContextOptionsBuilder<CoffeeMugDbContext>();
             optionsBuilder.UseSqlServer(
                 databaseConnectionString,
