@@ -30,6 +30,8 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
             => Ok(await productService.Find(id));
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] ProductDataDto dto)
         {
             var product = await productService.Create(dto);
@@ -37,6 +39,8 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put(Guid id, [FromBody] ProductDataDto dto)
         {
             await productService.Update(id, dto);
@@ -44,6 +48,7 @@ namespace Chilicki.CoffeeMugTask.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete(Guid id)
         {
             await productService.Delete(id);
